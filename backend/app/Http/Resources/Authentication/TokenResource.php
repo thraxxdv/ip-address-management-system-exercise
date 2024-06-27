@@ -5,7 +5,7 @@ namespace App\Http\Resources\Authentication;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class AuthenticatedResource extends JsonResource
+class TokenResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,6 +14,10 @@ class AuthenticatedResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'token' => $this->resource->plainTextToken,
+            'name' => $this->resource->accessToken->name,
+            'expires_at' => $this->resource->accessToken->expires_at
+        ];
     }
 }

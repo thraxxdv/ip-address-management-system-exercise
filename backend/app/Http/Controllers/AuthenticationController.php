@@ -4,8 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\Authentication\InvalidCredentialsException;
 use App\Http\Requests\Authentication\AuthenticationRequest;
-use App\Http\Resources\Authentication\AuthenticatedResource;
-use Illuminate\Http\Request;
+use App\Http\Resources\Authentication\TokenResource;
 use Illuminate\Support\Facades\Auth;
 
 class AuthenticationController extends Controller
@@ -13,7 +12,8 @@ class AuthenticationController extends Controller
     public function authenticate(AuthenticationRequest $request)
     {
         if (Auth::attempt($request->validated())) {
-            return response()->json(Auth::user());
+            $token = Auth::user()->createToken("authentication_token");
+            return new TokenResource($token);
         } else {
             throw new InvalidCredentialsException();
         }
