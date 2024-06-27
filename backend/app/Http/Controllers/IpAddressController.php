@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\IpAddress\StoreIpAddressRequest;
 use App\Models\IpAddress;
 use Illuminate\Http\Request;
 
@@ -18,9 +19,13 @@ class IpAddressController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreIpAddressRequest $request)
     {
-        //
+        $ipAddress = new IpAddress();
+        $ipAddress->ip_address = $request->validated("ip_address");
+        $ipAddress->label = $request->validated("label");
+        $ipAddress->created_by = $request->user()->id;
+        $ipAddress->save();
     }
 
     /**
