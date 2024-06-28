@@ -9,6 +9,7 @@ Route::post("/authenticate", [AuthenticationController::class, "authenticate"]);
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::resource('ip-addresses', IpAddressController::class)->only([
+        'index',
         'store',
         'update'
     ]);

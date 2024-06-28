@@ -15,7 +15,7 @@ class IpAddressController extends Controller
      */
     public function index()
     {
-        //
+        return IpAddressResource::collection(IpAddress::all()->load(['auditLogs', 'auditLogs.actionedBy']));
     }
 
     /**
@@ -33,14 +33,6 @@ class IpAddressController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(IpAddress $ipAddress)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
     public function update(UpdateIpAddressRequest $request, IpAddress $ipAddress)
@@ -54,13 +46,5 @@ class IpAddressController extends Controller
 
         // return response()->json($ipAddress->load("auditLogs"));
         return new IpAddressResource($ipAddress->load(['auditLogs', 'auditLogs.actionedBy']));
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(IpAddress $ipAddress)
-    {
-        //
     }
 }
