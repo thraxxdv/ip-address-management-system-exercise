@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('audit_logs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId("user_id")->constrained();
+            $table->foreignId("actioned_by")->constrained("users");
             $table->morphs("audit_loggable");
             $table->timestamps();
         });
