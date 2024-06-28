@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\IpAddress\StoreIpAddressRequest;
 use App\Http\Requests\IpAddress\UpdateIpAddressRequest;
+use App\Http\Resources\IpAddress\IpAddressResource;
 use App\Models\IpAddress;
 use Illuminate\Support\Facades\Gate;
 
@@ -27,6 +28,8 @@ class IpAddressController extends Controller
         $ipAddress->label = $request->validated("label");
         $ipAddress->created_by = $request->user()->id;
         $ipAddress->save();
+
+        return new IpAddressResource($ipAddress);
     }
 
     /**
@@ -48,6 +51,9 @@ class IpAddressController extends Controller
         $ipAddress->auditLogs()->create(['payload' => $ipAddress->toJson(), 'actioned_by' => $request->user()->id]);
         $ipAddress->label = $request->validated('label');
         $ipAddress->save();
+
+        // return response()->json($ipAddress->load("auditLogs"));
+        return new IpAddressResource($ipAddress->load(['auditLogs', 'auditLogs.actionedBy']));
     }
 
     /**
