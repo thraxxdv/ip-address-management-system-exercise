@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\IpAddress\StoreIpAddressRequest;
+use App\Http\Requests\IpAddress\UpdateIpAddressRequest;
 use App\Models\IpAddress;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class IpAddressController extends Controller
 {
@@ -39,9 +40,14 @@ class IpAddressController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, IpAddress $ipAddress)
+    public function update(UpdateIpAddressRequest $request, IpAddress $ipAddress)
     {
-        //
+
+        Gate::authorize('update', $ipAddress);
+
+        $ipAddress->auditLogs()->create(['payload' => $ipAddress->toJson(), 'actioned_by' => $request->user()->id]);
+        $ipAddress->label = $request->validated('label');
+        $ipAddress->save();
     }
 
     /**

@@ -17,6 +17,8 @@ class AuditLog extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['payload', 'actioned_by'];
+
     public function auditLoggable(): MorphTo
     {
         return $this->morphTo();
