@@ -47,6 +47,17 @@ services:
                 - "-p${DB_PASSWORD}"
             retries: 3
             timeout: 5s
+    nextjs:
+        build:
+            context: ../frontend
+        ports:
+            - "3050:3000"
+        volumes:
+            - "../frontend:/app"
+        depends_on:
+            - laravel.test
+        networks:
+            - sail
 networks:
     sail:
         driver: bridge
