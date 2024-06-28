@@ -1,4 +1,4 @@
 export interface CreateIpAddress {
   label: string;
-  ip_addres: string;
+  ip_address: string;
 }
