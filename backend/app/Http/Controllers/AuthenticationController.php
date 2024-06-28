@@ -13,6 +13,10 @@ class AuthenticationController extends Controller
     {
         if (Auth::attempt($request->validated())) {
             $token = Auth::user()->createToken("authentication_token");
+            Auth::user()->auditLoggables()->create([
+                'payload' => json_encode(['logged_in' => true, 'timestamp' => now()->toDateTimeString()]),
+                'actioned_by' => Auth::user()->id
+            ]);
             return new TokenResource($token);
         } else {
             throw new InvalidCredentialsException();
