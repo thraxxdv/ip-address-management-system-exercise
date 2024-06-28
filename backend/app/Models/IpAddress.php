@@ -4,7 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 /**
  * Class IpAddress
@@ -28,4 +29,14 @@ class IpAddress extends Model
         'label',
         'created_by',
     ];
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, "created_by");
+    }
+
+    public function auditLogs(): MorphMany
+    {
+        return $this->morphMany(AuditLog::class, "audit_loggable");
+    }
 }

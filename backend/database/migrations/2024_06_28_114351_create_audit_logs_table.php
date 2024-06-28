@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId("actioned_by")->constrained("users");
             $table->morphs("audit_loggable");
+            $table->json("payload");
             $table->timestamps();
         });
     }
